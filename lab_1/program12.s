@@ -1,6 +1,7 @@
 .data
+	array: .word 24
 	message: .asciiz "The highest number is: "
-	array: .word 5, 6, 3, 11, 2, 9
+	prompt: .asciiz "Enter a number: "
 
 .text
 
@@ -17,9 +18,29 @@
 		addi $t0, $zero, 0
 		addi $s0, $zero, 0
 		
+		jal initiateArray
+		
 		# Start loop
 		jal while
 	
+	initiateArray:
+		# While i != 6
+		beq $t0, 24, exit1
+		
+		li $v0, 4
+		la $a0, prompt
+		syscall
+		
+		li $v0, 5
+		syscall
+		
+		sw $v0, array($t0)
+		addi $t0, $t0, 4
+		
+		j initiateArray
+		
+		arrayComplete:
+		jr $ra
 	while: 
 		# While i != 6
 		beq $t0, 24, exit
@@ -46,7 +67,14 @@
 		li $v0, 10
 		syscall
 		
+	exit1:
+		addi $t0, $zero, 0
 		
+		li $v0, 1
+		addi $a0, $zero, 23
+		syscall
+		
+		j arrayComplete
 	updateMax:
 		move $s0, $s1
 		jr $ra
