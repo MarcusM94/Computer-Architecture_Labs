@@ -64,6 +64,16 @@ int flip_bit(n, index){
     bit_representation(n ^ (1 << index));
 }
 
+int is_number_odd(n){
+
+    //Any way to avoid if statement??
+
+    if((n & 1) == 0)
+        printf("%i is even\n", n);
+    else
+        printf("%i is odd", n);
+}
+
 int bit_representation(n){
     printf("The number %i in bits is: ", n);
     for(int i = (BITS - 1); i >= 0; i--){
