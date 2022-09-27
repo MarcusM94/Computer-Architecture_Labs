@@ -12,6 +12,7 @@ int main(void){
     multiply_by_16(n);
     set_bit(n, 1);
     clear_bit(n, 3);
+    flip_bit(n, 0);
 
 }
 
@@ -56,6 +57,11 @@ int clear_bit(n, index){
     //Create a bit sequence just like set_bit but inverse where the only unset bit is that of the index
     //Then do a & operation to clear that bit
     bit_representation((n & ~(1 << index)));
+}
+
+int flip_bit(n, index){
+    printf("The %ith bit has been flipped: \n", index);
+    bit_representation(n ^ (1 << index));
 }
 
 int bit_representation(n){
