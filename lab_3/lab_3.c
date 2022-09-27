@@ -4,11 +4,12 @@
 #define BITS sizeof(int) * 8
 
 int main(void){  
-    int n = 12;
+    int n = 1000000000;
     is_lsb_set(n);
     is_msb_set(n);
     get_bit(n, 2);
     bit_representation(n);
+    multiply_by_16(n);
 
 }
 
@@ -35,6 +36,10 @@ int get_bit(n, index){
     int n_bit = ((n >> index) & 1);
     printf("The bit at index %i is %i\n", index, n_bit);
 
+}
+
+int multiply_by_16(n){
+    printf("%i * 16 = %i\n", n, n << 4);
 }
 
 int set_bit(n, index){
