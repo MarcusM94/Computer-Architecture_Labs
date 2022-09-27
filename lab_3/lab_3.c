@@ -10,6 +10,7 @@ int main(void){
     get_bit(n, 2);
     bit_representation(n);
     multiply_by_16(n);
+    set_bit(n, 1);
 
 }
 
@@ -39,11 +40,14 @@ int get_bit(n, index){
 }
 
 int multiply_by_16(n){
+    //TODO: Fix when overflow happends with number greater than 32bits
     printf("%i * 16 = %i\n", n, n << 4);
 }
 
 int set_bit(n, index){
-
+    printf("The %i-th bit has been set: \n", index+1);
+    //Create an bit sequence with the only bit set is that of the index given
+    bit_representation((n | ( 1 << index)));
 }
 
 int bit_representation(n){
