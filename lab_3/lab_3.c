@@ -11,6 +11,7 @@ int main(void){
     bit_representation(n);
     multiply_by_16(n);
     set_bit(n, 1);
+    clear_bit(n, 3);
 
 }
 
@@ -48,6 +49,13 @@ int set_bit(n, index){
     printf("The %i-th bit has been set: \n", index+1);
     //Create an bit sequence with the only bit set is that of the index given
     bit_representation((n | ( 1 << index)));
+}
+
+int clear_bit(n, index){
+    printf("The %i-th bit has been cleared: \n", index+1);
+    //Create a bit sequence just like set_bit but inverse where the only unset bit is that of the index
+    //Then do a & operation to clear that bit
+    bit_representation((n & ~(1 << index)));
 }
 
 int bit_representation(n){
