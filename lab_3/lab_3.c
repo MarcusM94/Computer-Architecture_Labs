@@ -14,6 +14,7 @@ int main(void){
     clear_bit(n, 3);
     flip_bit(n, 0);
     is_number_odd(6);
+    divide_by_128(131);
 
 }
 
@@ -71,6 +72,16 @@ int is_number_odd(n){
         printf("%i is even\n", n);
     else
         printf("%i is odd\n", n);
+}
+
+int divide_by_128(n){
+    //First create a bit sequence with only zeros
+    //then inverse that to a sequence with only 1 (-1)
+    //then shit left 7 spaces to get 0 on the first 7 bits
+    //then inverse again to get 1's in the first 7 bits
+    //then finally do a AND operation to find out what's left from the division, ie, the bits that are still set
+    printf("The remainder of %i / 128 is: %i\n", n, (n & ~((~(int)0) << 7)));
+    
 }
 
 int bit_representation(n){
