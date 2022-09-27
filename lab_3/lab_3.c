@@ -13,6 +13,7 @@ int main(void){
     set_bit(n, 1);
     clear_bit(n, 3);
     flip_bit(n, 0);
+    is_number_odd(6);
 
 }
 
@@ -65,13 +66,11 @@ int flip_bit(n, index){
 }
 
 int is_number_odd(n){
-
     //Any way to avoid if statement??
-
     if((n & 1) == 0)
         printf("%i is even\n", n);
     else
-        printf("%i is odd", n);
+        printf("%i is odd\n", n);
 }
 
 int bit_representation(n){
