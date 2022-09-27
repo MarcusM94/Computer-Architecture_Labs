@@ -4,7 +4,7 @@
 #define BITS sizeof(int) * 8
 
 int main(void){  
-    int n = 1000000000;
+    int n = 12;
     is_lsb_set(n);
     is_msb_set(n);
     get_bit(n, 2);
