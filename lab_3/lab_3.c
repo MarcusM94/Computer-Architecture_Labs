@@ -79,7 +79,7 @@ int divide_by_128(n){
     //then inverse that to a sequence with only 1 (-1)
     //then shit left 7 spaces to get 0 on the first 7 bits
     //then inverse again to get 1's in the first 7 bits
-    //then finally do a AND operation to find out what's left from the division, ie, the bits that are still set
+    //then finally do a AND operation to find out what's left from the division, ie, the bits that are still set out of those seven bits
     printf("The remainder of %i / 128 is: %i\n", n, (n & ~((~(int)0) << 7)));
     
 }
