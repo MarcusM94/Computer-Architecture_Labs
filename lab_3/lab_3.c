@@ -15,7 +15,37 @@ int main(void){
     flip_bit(n, 0);
     is_number_odd(6);
     divide_by_128(131);
+    trailing_zeroes(n);
+    leading_zeroes(n);
+}
 
+int leading_zeroes(n){
+    int count = 0;
+    int bit_mask = n;
+    int oneReverse = 1 << (BITS - 1);
+    for(int i = 0; i < BITS; i++){
+        if(bit_mask & oneReverse){
+            break;
+        } else {
+            bit_mask = bit_mask << 1;
+            count++;
+        }
+    }
+    printf("Total leading zeroes: %i\n", count);
+}
+
+int trailing_zeroes(n){
+    int count = 0;
+    int bit_mask = n;
+    for(int i = 0; i < BITS; i++){
+        if(bit_mask & 1){
+            break;
+        } else {
+            bit_mask = bit_mask >> 1;
+            count++;
+        }
+    }
+    printf("Total trailing zeroes: %i\n", count);
 }
 
 int is_lsb_set(n){
