@@ -3,21 +3,80 @@
 
 #define BITS sizeof(int) * 8
 
-int main(void){  
-    int n = 12;
-    is_lsb_set(n);
-    is_msb_set(n);
-    get_bit(n, 2);
-    bit_representation(n);
-    multiply_by_16(n);
-    set_bit(n, 1);
-    clear_bit(n, 3);
-    flip_bit(n, 0);
-    is_number_odd(6);
-    divide_by_128(131);
-    trailing_zeroes(n);
-    leading_zeroes(n);
+void list_commands(){
+    printf("Check if LSB is set:\t\t\t1\n");
+    printf("Check if MSB is set:\t\t\t2\n");
+    printf("Get bit at a given index:\t\t3\n");
+    printf("Set bit at a given index:\t\t4\n");
+    printf("Clear bit at a given index:\t\t5\n");
+    printf("Flip bit at a given index:\t\t6\n");
+    printf("Multiply number by 16:\t\t\t7\n");
+    printf("Check if number is odd or even:\t\t8\n");
+    printf("Divide the number by 128:\t\t9\n");
+    printf("Check amount of trailing zeroes:\t10\n");
+    printf("Check amount of leading zeroes:\t\t11\n");
+    printf("Exit:\t\t\t\t\t0\n");
 }
+
+int main(void){
+
+    int userInput;
+    int n = 12;
+
+    do
+    {   bit_representation(n);
+        list_commands();
+        printf("Enter a command: ");
+        scanf("%i", &userInput);
+        printf("%i", userInput);
+        printf("\n");
+        system("cls");
+        switch (userInput)
+        {
+        case 1:
+            is_lsb_set(n);
+            break;
+        case 2:
+            is_msb_set(n);
+            break;
+        case 3:
+            get_bit(n);
+            break;
+        case 4:
+            n = set_bit(n);
+            break;
+        case 5:
+            n = clear_bit(n);
+            break;
+        case 6:
+            n = flip_bit(n);
+            break;
+        case 7:
+            n = multiply_by_16(n);
+            break;
+        case 8:
+            is_number_odd(n);
+            break;
+        case 9:
+            n = divide_by_128(n);
+            break;
+        case 10:
+            trailing_zeroes(n);
+            break;
+        case 11:
+            leading_zeroes(n);
+            break;
+        case 0:
+            printf("Shutting down...\n");
+            break;        
+        default:
+            printf("Wrong input, please try again\n");
+            break;
+        }
+
+    } while (userInput != 0);
+}
+
 
 int leading_zeroes(n){
     int count = 0;
@@ -66,34 +125,46 @@ int is_msb_set(n){
     
 }
 
-int get_bit(n, index){
+int get_bit(n){
+    int index;
+    printf("Get bit at what index:\n");
+    scanf("%i", &index);
     //Move the bit at the given position to the position of LSB and compare it to the binary number of the int 1
     int n_bit = ((n >> index) & 1);
-    printf("The bit at index %i is %i\n", index, n_bit);
+    printf("\nThe bit at index %i is %i\n", index, n_bit);
 
 }
 
 int multiply_by_16(n){
     //TODO: Fix when overflow happends with number greater than 32bits
-    printf("%i * 16 = %i\n", n, n << 4);
+    return n << 4;
 }
 
-int set_bit(n, index){
-    printf("The %i-th bit has been set: \n", index+1);
+int set_bit(n){
+    int index;
+    printf("Set bit at what index:\n");
+    scanf("%i", &index);
+    printf("\nThe %i-th bit has been set: \n", index+1);
     //Create an bit sequence with the only bit set is that of the index given
-    bit_representation((n | ( 1 << index)));
+    return (n | ( 1 << index));
 }
 
-int clear_bit(n, index){
-    printf("The %i-th bit has been cleared: \n", index+1);
+int clear_bit(n){
+    int index;
+    printf("Clear bit at what index:\n");
+    scanf("%i", &index);
+    printf("\nThe %i-th bit has been cleared: \n", index+1);
     //Create a bit sequence just like set_bit but inverse where the only unset bit is that of the index
     //Then do a & operation to clear that bit
-    bit_representation((n & ~(1 << index)));
+    return (n & ~(1 << index));
 }
 
-int flip_bit(n, index){
-    printf("The %ith bit has been flipped: \n", index);
-    bit_representation(n ^ (1 << index));
+int flip_bit(n){
+    int index;
+    printf("Flip bit at what index:\n");
+    scanf("%i", &index);
+    printf("\nThe %ith bit has been flipped: \n", index);
+    return n ^ (1 << index);
 }
 
 int is_number_odd(n){
@@ -111,11 +182,13 @@ int divide_by_128(n){
     //then inverse again to get 1's in the first 7 bits
     //then finally do a AND operation to find out what's left from the division, ie, the bits that are still set out of those seven bits
     printf("The remainder of %i / 128 is: %i\n", n, (n & ~((~(int)0) << 7)));
+    //return n / 128;
+    return n >> 7;
     
 }
 
 int bit_representation(n){
-    printf("The number %i in bits is: ", n);
+    printf("Current number: %i\nIn bits: ", n);
     for(int i = (BITS - 1); i >= 0; i--){
         printf("%i", ((n >> i) & 1));
         if(i%4 == 0)
