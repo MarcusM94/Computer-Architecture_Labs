@@ -3,6 +3,8 @@
 
 #define BITS sizeof(int) * 8
 
+typedef float pnt[3];
+
 void list_commands(){
     printf("Check if LSB is set:\t\t\t1\n");
     printf("Check if MSB is set:\t\t\t2\n");
@@ -18,9 +20,44 @@ void list_commands(){
     printf("Exit:\t\t\t\t\t0\n");
 }
 
+void count(pnt const * pnts, const int n, unsigned cnt[8]) {
+for (int i=0; i<8; ++i)
+ cnt[i] = 0;
+for (int i=0; i<n; ++i) {
+ if(pnts[i][0]>=0.0f && pnts[i][1]>=0.0f && pnts[i][2]>=0.0f ) ++cnt[7]; else
+ if(pnts[i][0]>=0.0f && pnts[i][1]>=0.0f && pnts[i][2]< 0.0f ) ++cnt[3]; else
+ if(pnts[i][0]>=0.0f && pnts[i][1]< 0.0f && pnts[i][2]>=0.0f ) ++cnt[5]; else
+ if(pnts[i][0]>=0.0f && pnts[i][1]< 0.0f && pnts[i][2]< 0.0f ) ++cnt[1]; else
+ if(pnts[i][0]< 0.0f && pnts[i][1]>=0.0f && pnts[i][2]>=0.0f ) ++cnt[6]; else
+ if(pnts[i][0]< 0.0f && pnts[i][1]>=0.0f && pnts[i][2]< 0.0f ) ++cnt[2]; else
+ if(pnts[i][0]< 0.0f && pnts[i][1]< 0.0f && pnts[i][2]>=0.0f ) ++cnt[4]; else
+ ++cnt[0];
+    }
+}
+
+void bit_count(pnt const * pnts, const int n, unsigned cnt[8]){
+    for (int i=0; i<8; ++i)
+        cnt[i] = 0;
+    for (int i=0; i<n; ++i) {
+        break;
+    }
+}
+
 int main(void){
 
-    int userInput;
+    pnt* arr = (pnt*)malloc(sizeof(pnt)*10000000);
+    for(int i = 0; i < 10000000; i++){
+        arr[i][0] = 1.0;
+        arr[i][1] = 2.0;
+        arr[i][2] = 1.0;
+
+    }
+
+    printf("%f", arr[50000][1]);
+    
+
+    //Uncomment for part 1
+    /*int userInput;
     int n = 12;
 
     do
@@ -74,7 +111,7 @@ int main(void){
             break;
         }
 
-    } while (userInput != 0);
+    } while (userInput != 0);*/
 }
 
 
