@@ -1,10 +1,11 @@
 #include <stdio.h>;
 #include <stdlib.h>;
-
+#include <time.h>
+ 
 #define BITS sizeof(int) * 8
-
+ 
 typedef float pnt[3];
-
+ 
 void list_commands(){
     printf("Check if LSB is set:\t\t\t1\n");
     printf("Check if MSB is set:\t\t\t2\n");
@@ -19,7 +20,7 @@ void list_commands(){
     printf("Check amount of leading zeroes:\t\t11\n");
     printf("Exit:\t\t\t\t\t0\n");
 }
-
+ 
 void count(pnt const * pnts, const int n, unsigned cnt[8]) {
 for (int i=0; i<8; ++i)
  cnt[i] = 0;
@@ -34,32 +35,58 @@ for (int i=0; i<n; ++i) {
  ++cnt[0];
     }
 }
-
+ 
 void bit_count(pnt const * pnts, const int n, unsigned cnt[8]){
+ 
+    int index;
+    int oneReverse = 1 << (BITS - 1);
+ 
+ 
     for (int i=0; i<8; ++i)
         cnt[i] = 0;
     for (int i=0; i<n; ++i) {
-        break;
+        index = 
+        ((pnts[i][0] >= 0.0f) << 0) |
+        ((pnts[i][1] >= 0.0f) << 1) |
+        ((pnts[i][2] >= 0.0f) << 2);
+        cnt[index]++;
     }
 }
-
+ 
 int main(void){
-
+ 
+    //Uncomment for part 2
+    /*
+    srand(time(0));
+    unsigned cnt[8];
+ 
     pnt* arr = (pnt*)malloc(sizeof(pnt)*10000000);
     for(int i = 0; i < 10000000; i++){
-        arr[i][0] = 1.0;
-        arr[i][1] = 2.0;
-        arr[i][2] = 1.0;
-
+        arr[i][0] = rand() % (1000 - (-1000) +1) + (-1000); 
+        arr[i][1] = rand() % (1000 - (-1000) +1) + (-1000);
+        arr[i][2] = rand() % (1000 - (-1000) +1) + (-1000);
+ 
     }
-
-    printf("%f", arr[50000][1]);
-    
-
+ 
+    clock_t t;
+ 
+    t = clock();
+    count(arr, 10000000, cnt);
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC;
+    printf("The function with If statements took: %f seconds\n", time_taken);
+ 
+    t = clock();
+    bit_count(arr, 10000000, cnt);
+    t = clock() - t;
+    time_taken = ((double)t)/CLOCKS_PER_SEC;
+    printf("The function without If statements took: %f seconds\n", time_taken);
+    */
+ 
+ 
     //Uncomment for part 1
-    /*int userInput;
+    int userInput;
     int n = 12;
-
     do
     {   bit_representation(n);
         list_commands();
@@ -110,11 +137,10 @@ int main(void){
             printf("Wrong input, please try again\n");
             break;
         }
-
-    } while (userInput != 0);*/
+    } while (userInput != 0);
 }
-
-
+ 
+ 
 int leading_zeroes(n){
     int count = 0;
     int bit_mask = n;
@@ -129,7 +155,7 @@ int leading_zeroes(n){
     }
     printf("Total leading zeroes: %i\n", count);
 }
-
+ 
 int trailing_zeroes(n){
     int count = 0;
     int bit_mask = n;
@@ -143,14 +169,14 @@ int trailing_zeroes(n){
     }
     printf("Total trailing zeroes: %i\n", count);
 }
-
+ 
 int is_lsb_set(n){
     if((n & 1) == 0)
         printf("The LSB is not set\n");
     else
         printf("The LSB is set\n");
 }
-
+ 
 int is_msb_set(n){
     //Create a new bit number where only the MSB is set to 1 and rest set to 0
     int bit_mask = 1 << (BITS - 1);
@@ -161,7 +187,7 @@ int is_msb_set(n){
         printf("The MSB is not set\n");
     
 }
-
+ 
 int get_bit(n){
     int index;
     printf("Get bit at what index:\n");
@@ -169,14 +195,18 @@ int get_bit(n){
     //Move the bit at the given position to the position of LSB and compare it to the binary number of the int 1
     int n_bit = ((n >> index) & 1);
     printf("\nThe bit at index %i is %i\n", index, n_bit);
-
+ 
 }
-
+ 
 int multiply_by_16(n){
-    //TODO: Fix when overflow happends with number greater than 32bits
-    return n << 4;
+    if((n << 4) == 0){ // n>(1<<27)-1
+        printf("Overflow, to large number. Try a different number\n");
+        return n;
+    }
+    else
+        return n << 4;
 }
-
+ 
 int set_bit(n){
     int index;
     printf("Set bit at what index:\n");
@@ -185,7 +215,7 @@ int set_bit(n){
     //Create an bit sequence with the only bit set is that of the index given
     return (n | ( 1 << index));
 }
-
+ 
 int clear_bit(n){
     int index;
     printf("Clear bit at what index:\n");
@@ -195,7 +225,7 @@ int clear_bit(n){
     //Then do a & operation to clear that bit
     return (n & ~(1 << index));
 }
-
+ 
 int flip_bit(n){
     int index;
     printf("Flip bit at what index:\n");
@@ -203,7 +233,7 @@ int flip_bit(n){
     printf("\nThe %ith bit has been flipped: \n", index);
     return n ^ (1 << index);
 }
-
+ 
 int is_number_odd(n){
     //Any way to avoid if statement??
     if((n & 1) == 0)
@@ -211,7 +241,7 @@ int is_number_odd(n){
     else
         printf("%i is odd\n", n);
 }
-
+ 
 int divide_by_128(n){
     //First create a bit sequence with only zeros
     //then inverse that to a sequence with only 1 (-1)
@@ -223,7 +253,7 @@ int divide_by_128(n){
     return n >> 7;
     
 }
-
+ 
 int bit_representation(n){
     printf("Current number: %i\nIn bits: ", n);
     for(int i = (BITS - 1); i >= 0; i--){
