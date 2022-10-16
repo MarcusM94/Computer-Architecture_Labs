@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <xmmintrin.h>
+#include <emmintrin.h>
+#include <immintrin.h>
 
 #define N 1000
 
@@ -18,16 +21,15 @@ int compare_matrices(int mat1[N][N], int mat2[N][N])
 // The first version of the algorithm. Computes result = mat1 * mat2.
 void version1(int mat1[N][N], int mat2[N][N], int result[N][N])
 {
-	int i, j, k;
-	for (i = 0; i < N; ++i)
+	for (int i = 0; i < N; ++i)
 	{
-		for (j = 0; j < N; ++j)
+		for (int j = 0; j < N; ++j)
 		{
 			// Compute the value for result[i][j]. Initialize it to 0, then
 			// run through row i of mat1 and column j of mat2 in parallel and
 			// multiply their elements pairwise and sum up the products.
 
-			for (k = 0; k < N; ++k)
+			for (int k = 0; k < N; ++k)
 				result[i][j] += mat1[i][k] * mat2[k][j];
 		}
 	}
@@ -36,40 +38,55 @@ void version1(int mat1[N][N], int mat2[N][N], int result[N][N])
 void version2(int mat1[N][N], int mat2[N][N], int result[N][N])
 {
 	int i, j, k;
-	for (j = 0; j < N; ++j)
+	for (int j = 0; j < N; ++j)
 	{
-		for (i = 0; i < N; ++i)
+		for (int i = 0; i < N; ++i)
 		{
-			for (k = 0; k < N; ++k)
+			for (int k = 0; k < N; ++k)
 				result[i][j] += mat1[i][k] * mat2[k][j];
 		}
 	}
 }
 
 void version3(int mat1[N][N], int mat2[N][N], int result[N][N])
-//ändra runt den här koden bara lite, inte många steg bara små saker
 {
-	int i, j, k;
-	for (j = 0; j < N; ++j)
-	{
-		for (i = 0; i < N; ++i)
-		{
-			for (k = 0; k < N; ++k)
-				result[j][i] += mat1[j][k] * mat2[k][i];
-		}
-	}
+
 }
 
 void version4(int mat1[N][N], int mat2[N][N], int result[N][N])
-//gör din egen algoritm
 {
-	//Fill your code here 
+
+	int i, j, k;
+	for (i = 0; i < N; i++)
+		for (j = 0; j < N; j++)
+			for(k = 0; k < N; ++k)
+				result[j][i] += mat1[i][k] * mat2[k][j];
+
 }
 
 void version5(int mat1[N][N], int mat2[N][N], int result[N][N])
-//använd dig av version 1 kodenblir lättare
 {
-	//Fill your code here 
+__m256i vec_res = _mm256_setzero_si256(); 
+__m256i vec_mat1 = _mm256_setzero_si256(); 
+__m256i vec_mat2 = _mm256_setzero_si256(); 
+
+for (int i = 0; i < N; i++)
+{
+    for (int j = 0; j < N; ++j)
+    {
+        vec_mat1 = _mm256_set1_epi32(mat1[i][j]);
+
+		//We use AVX hence why we increment k by 8 each loop, instead of sse which would let us only store 4 ints instead of 8
+        for (int k = 0; k < N; k += 8)
+        {
+            vec_mat2 = _mm256_loadu_si256((__m256i*)&mat2[j][k]);
+            vec_res = _mm256_loadu_si256((__m256i*)&result[i][k]);
+            vec_res = _mm256_add_epi32(vec_res ,_mm256_mullo_epi32(vec_mat1, vec_mat2));
+
+            _mm256_storeu_si256((__m256i*)&result[i][k], vec_res);
+        }
+    }
+    }
 }
 // The matrices. mat_ref is used for reference. If the multiplication is done correctly,
 // mat_r should equal mat_ref.
@@ -112,9 +129,9 @@ int main(void)
 	// Run the algorithm (uncomment the right version to compile it)
 	//version1(mat_a, mat_b, mat_r);
 	//version2(mat_a, mat_b, mat_r);
-	version3(mat_a, mat_b, mat_r); 
+	//version3(mat_a, mat_b, mat_r); 
 	//version4(mat_a, mat_b, mat_r); 
-	//version5(mat_a, mat_b, mat_r); 
+	version5(mat_a, mat_b, mat_r); 
 
 	// Take the time again
 	t1 = clock();
