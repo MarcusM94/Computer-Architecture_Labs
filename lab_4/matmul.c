@@ -54,13 +54,16 @@ void version3(int mat1[N][N], int mat2[N][N], int result[N][N])
 }
 
 void version4(int mat1[N][N], int mat2[N][N], int result[N][N])
-{
+{	
+	int b = 2;
+	for(int i0 = 0; i0 < N; i0++)
+		for(int j0 = 0; j0 < N; j0++)
+			for(int k0 = 0; k0 < N; k0++)
+				for(int i = i0; i < (i0+b-1); i++)
+					for(int j = j0; j < (j0+b-1); j++)
+						for(int k = k0; k < (k0+b-1); k++)
+							result[i][j] += mat1[i][k] * mat2[k][j];
 
-	int i, j, k;
-	for (i = 0; i < N; i++)
-		for (j = 0; j < N; j++)
-			for(k = 0; k < N; ++k)
-				result[j][i] += mat1[i][k] * mat2[k][j];
 
 }
 
@@ -130,8 +133,8 @@ int main(void)
 	//version1(mat_a, mat_b, mat_r);
 	//version2(mat_a, mat_b, mat_r);
 	//version3(mat_a, mat_b, mat_r); 
-	//version4(mat_a, mat_b, mat_r); 
-	version5(mat_a, mat_b, mat_r); 
+	version4(mat_a, mat_b, mat_r); 
+	//version5(mat_a, mat_b, mat_r); 
 
 	// Take the time again
 	t1 = clock();
