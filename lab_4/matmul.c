@@ -50,7 +50,15 @@ void version2(int mat1[N][N], int mat2[N][N], int result[N][N])
 
 void version3(int mat1[N][N], int mat2[N][N], int result[N][N])
 {
-
+	int i, j, k;
+	for (int i = 0; i < N; ++j)
+	{
+		for (int j = 0; j < N; ++i)
+		{
+			for (int k = 0; k < N; ++k)
+				result[i][j] += mat1[i][k] * mat2[k][j];
+		}
+	}
 }
 
 void version4(int mat1[N][N], int mat2[N][N], int result[N][N])
